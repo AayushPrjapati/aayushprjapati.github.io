@@ -3,53 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aayush Prajapati | Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Aayush Prajapati | Project Vault</title>
+    <style>
+        :root {
+            /* Deeper, more aesthetic dark theme */
+            --bg-color: #050505;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-gradient: linear-gradient(135deg, #00f2fe, #4facfe, #00f2fe);
+            --card-bg: rgba(20, 20, 25, 0.4);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-hover: rgba(30, 30, 40, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Glow */
+        .bg-glow {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: pulseGlow 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(-5%, -5%); }
+        }
+
+        header {
+            max-width: 800px;
+            margin: 4rem auto 6rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+            letter-spacing: -0.02em;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .bio {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+            padding-bottom: 5rem;
+        }
+
+        /* 3D Card Setup */
+        .project-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            /* Required for 3D inner popping */
+            transform-style: preserve-3d;
+            
+            /* Scroll animation initial state */
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        /* Scroll reveal active class */
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.15), inset 0 0 20px rgba(56, 189, 248, 0.05);
+        }
+
+        /* 3D Pop-out elements inside the card */
+        .project-card-content {
+            transform: translateZ(60px); /* Pushes content towards the user */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .project-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .project-desc {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            font-size: 1.05rem;
+        }
+
+        .project-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            transform: translateZ(20px); /* Extra pop for the button */
+        }
+
+        .project-links a:hover {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: #000;
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-border);
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.8rem; }
+            body { padding: 1.5rem; }
+            .project-card { padding: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
 
+    <div class="bg-glow"></div>
+
     <header>
-        <h1>Aayush Prajapati</h1>
-        <p class="bio">Web Developer & CSE Student (2024-2028)</p>
-        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
-            Building digital solutions and exploring the world of programming. Check out my latest projects below.
+        <h1>Project Vault</h1>
+        <p class="bio">Welcome to my project showcase</p>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
+            A collection of my big ideas, small scripts, and ongoing builds.
         </p>
     </header>
 
     <main class="container">
-        <h2 class="section-title">My Projects</h2>
-        
         <div class="projects-grid">
             
-            <div class="project-card">
-                <h3 class="project-title">InsightCare</h3>
-                <p class="project-desc">A smart healthcare web platform designed to streamline medical processes and improve accessibility.</p>
-                <div class="project-links">
-                    <a href="https://aayushprjapati.github.io/InsightCare/" target="_blank">View</a>
+            <div class="project-card hidden" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+                <div class="project-card-content">
+                    <h3 class="project-title">InsightCare 2.0</h3>
+                    <p class="project-desc">The next iteration of the smart healthcare platform, featuring upgraded capabilities, refined UI/UX, and optimized performance.</p>
+                    <div class="project-links">
+                        <a href="https://aayushprjapati.github.io/InsightCare_2.0/" target="_blank">View Live Project</a>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <h3 class="project-title">InsightCare 2.0</h3>
-                <p class="project-desc">The next iteration of the smart healthcare platform, featuring upgraded capabilities, refined UI/UX, and optimized performance.</p>
-                <div class="project-links">
-                    <a href="https://aayushprjapati.github.io/InsightCare_2.0/" target="_blank">View</a>
+            <div class="project-card hidden" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+                <div class="project-card-content">
+                    <h3 class="project-title">InsightCare (v1)</h3>
+                    <p class="project-desc">A smart healthcare web platform designed to streamline medical processes and improve accessibility.</p>
+                    <div class="project-links">
+                        <a href="https://aayushprjapati.github.io/InsightCare/" target="_blank">View Legacy Version</a>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <h3 class="project-title">Scrape-it</h3>
-                <p class="project-desc">A robust web scraping utility built to extract, process, and structure data efficiently from various online sources.</p>
-                <div class="project-links">
-                    <a href="https://aayushprjapati.github.io/scrape-it" target="_blank">View</a>
+            <div class="project-card hidden" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+                <div class="project-card-content">
+                    <h3 class="project-title">Scrape-it</h3>
+                    <p class="project-desc">A robust web scraping utility built to extract, process, and structure data efficiently from various online sources.</p>
+                    <div class="project-links">
+                        <a href="https://aayushprjapati.github.io/scrape-it" target="_blank">View Project</a>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card">
-                <h3 class="project-title">Portfolio Website</h3>
-                <p class="project-desc">The personal portfolio you are currently viewing, built to showcase my development journey, skills, and past internship experience.</p>
-                <div class="project-links">
-                    <a href="https://aayushprjapati.github.io/my-portfolio" target="_blank">View</a>
+            <div class="project-card hidden" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+                <div class="project-card-content">
+                    <h3 class="project-title">Main Portfolio</h3>
+                    <p class="project-desc">My professional developer portfolio detailing my CSE journey, skills, and past internship experience.</p>
+                    <div class="project-links">
+                        <a href="https://aayushprjapati.github.io/my-portfolio" target="_blank">View Portfolio</a>
+                    </div>
                 </div>
             </div>
 
@@ -57,8 +249,36 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Aayush Prajapati. Built with HTML & CSS.</p>
+        <p>&copy; 2026 Aayush Prajapati. Built for the love of code.</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const cards = document.querySelectorAll('.project-card');
+            
+            // Intersection Observer to trigger animations when scrolling
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Add class to trigger CSS transform/opacity
+                        entry.target.classList.add('visible');
+                        // Stop observing once it has animated in
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1, // Triggers when 10% of the card is visible
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            // Add delay to each card based on its index for a staggering effect
+            cards.forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.15}s`;
+                observer.observe(card);
+            });
+        });
+    </script>
 </body>
 </html>
