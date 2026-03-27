@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aayush Prajapati | Portfolio</title>
+<<<<<<< HEAD
+    <link rel="stylesheet" href="style.css">
+=======
+    <style> 
+    :root {
+            --bg-color: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        header {
+            max-width: 800px;
+            margin: 4rem auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .bio {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .accent-text {
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--card-bg);
+            padding-bottom: 1rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .project-desc {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .project-links a:hover {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-bg);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            body { padding: 1rem; }
+        }
+    </style>
+>>>>>>> 7408d0d22ae1ac820bb7fffd98ee21e3a342d37a
+</head>
+<body>
+
+    <header>
+        <h1>Aayush Prajapati</h1>
+        <p class="bio">Web Developer & CSE Student (2024-2028)</p>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            Building digital solutions and exploring the world of programming. Check out my latest projects below.
+        </p>
+    </header>
+
+    <main class="container">
+        <h2 class="section-title">My Projects</h2>
+        
+        <div class="projects-grid">
+            
+            <div class="project-card">
+                <h3 class="project-title">InsightCare</h3>
+                <p class="project-desc">A smart healthcare web platform designed to streamline medical processes and improve accessibility.</p>
+                <div class="project-links">
+                    <a href="https://aayushprjapati.github.io/InsightCare/" target="_blank">View</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">InsightCare 2.0</h3>
+                <p class="project-desc">The next iteration of the smart healthcare platform, featuring upgraded capabilities, refined UI/UX, and optimized performance.</p>
+                <div class="project-links">
+                    <a href="https://aayushprjapati.github.io/insightcare2.0" target="_blank">View</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">Scrape-it</h3>
+                <p class="project-desc">A robust web scraping utility built to extract, process, and structure data efficiently from various online sources.</p>
+                <div class="project-links">
+                    <a href="https://aayushprjapati.github.io/scrape-it" target="_blank">View</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">Portfolio Website</h3>
+                <p class="project-desc">The personal portfolio you are currently viewing, built to showcase my development journey, skills, and past internship experience.</p>
+                <div class="project-links">
+                    <a href="https://aayushprjapati.github.io/my-portfolio" target="_blank">View</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Aayush Prajapati. Built with HTML & CSS.</p>
+    </footer>
+
+</body>
+</html>
