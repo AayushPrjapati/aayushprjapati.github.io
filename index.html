@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aayush Prajapati | Project Vault</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-gradient: linear-gradient(135deg, #00f2fe, #4facfe, #00f2fe);
+            --card-bg: rgba(20, 20, 25, 0.4);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --card-hover: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Lenis Smooth Scroll Required CSS */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Noise & Glow */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 40%);
+            z-index: -1;
+            animation: pulseGlow 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-2%, -2%); }
+        }
+
+        header {
+            max-width: 800px;
+            margin: 6rem auto 8rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 4s linear infinite;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .bio {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .header-desc {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
+            padding-bottom: 5rem;
+        }
+
+        /* --- 3D Card Setup --- */
+        .project-card-wrapper {
+            perspective: 1200px;
+            visibility: hidden; /* Prevent FOUC before GSAP loads */
+        }
+
+        .project-card {
+            background: linear-gradient(145deg, var(--card-bg), rgba(10, 10, 12, 0.8));
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transform-style: preserve-3d;
+            height: 100%;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .project-card:hover {
+            border-color: var(--theme-color, rgba(255, 255, 255, 0.2));
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.9), 
+                        0 0 40px -15px var(--theme-color, transparent);
+        }
+
+        .project-card-content {
+            transform: translateZ(30px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .project-card:hover .project-card-content {
+            transform: translateZ(60px); 
+        }
+
+        .project-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .project-desc {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            font-size: 1.05rem;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Tech Stack Tags */
+        .tech-stack {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+        
+        .tech-tag {
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            border: 1px solid var(--card-border);
+            font-weight: 500;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-wrapper {
+            position: relative;
+            padding: 2px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+            transform: translateZ(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .btn-wrapper {
+            transform: translateZ(50px);
+        }
+
+        .btn-wrapper::before {
+            content: "";
+            position: absolute;
+            top: -100%; left: -100%; width: 300%; height: 300%;
+            background: conic-gradient(transparent, var(--theme-color, var(--accent)), transparent 30%);
+            z-index: 0;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .theme-btn {
+            position: relative;
+            display: block;
+            background: #050505;
+            color: var(--theme-color, var(--text-main));
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .theme-btn:hover {
+            background: var(--theme-color, var(--accent));
+            color: #000 !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .standard-btn {
+            text-decoration: none;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: block;
+            text-align: center;
+            transform: translateZ(20px);
+        }
+
+        .project-card:hover .standard-btn {
+            transform: translateZ(50px);
+        }
+
+        .standard-btn:hover {
+            background: var(--text-main);
+            color: #000;
+        }
+
+        .glow-title { color: var(--theme-color) !important; }
+
+        footer {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 3rem 0;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-border);
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1.5rem; }
+            header { margin: 4rem auto; }
+            .project-card { padding: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <header class="gsap-header">
+        <h1>Project Vault</h1>
+        <p class="bio">Welcome to my showcase</p>
+        <p class="header-desc">
+            A collection of my big ideas, small scripts, and ongoing builds.
+        </p>
+    </header>
+
+    <main class="container">
+        <div class="projects-grid">
+
+            <div class="project-card-wrapper">
+                <div class="project-card" style="--theme-color: #c084fc;" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
+                    <div class="project-card-content">
+                        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 0.5rem;">
+                            <h3 class="project-title glow-title" style="margin-bottom: 0.8rem;">ABHi Sales Copilot</h3>
+                            <span class="status-badge" style="color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05);">● Live Agent</span>
+                        </div>
+                        <p class="bio" style="font-size: 0.75rem; margin-bottom: 1.5rem; text-align: center; color: rgba(192, 132, 252, 0.8);">Lead Intelligence & Sales Insights</p>
+                        
+                        <p class="project-desc">
+                            An AI copilot that analyzes prospect data to generate actionable pre-call reports. It highlights key insights, pain points, and personalized talking points for high-impact sales conversations.
+                        </p>
+
+                        <div class="tech-stack">
+                            <span class="tech-tag" style="background: rgba(192, 132, 252, 0.1); color: #c084fc; border-color: rgba(192, 132, 252, 0.3);">Relevance AI</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">RapidAPI</span>
+                            <span class="tech-tag">Web Crawler</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <div class="btn-wrapper">
+                                <a href="#" target="_blank" class="theme-btn">Launch AI Agent</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+
+            <div class="project-card-wrapper">
+                <div class="project-card" style="--theme-color: #ec4899;" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
+                    <div class="project-card-content" style="align-items: center; text-align: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 0.5rem;">
+                            <h3 class="project-title glow-title" style="margin-bottom: 0.8rem;">Main Portfolio</h3>
+                        </div>
+                        <p class="bio" style="font-size: 0.75rem; margin-bottom: 1.5rem; color: rgba(236, 72, 153, 0.8);">My Digital Workspace</p>
+
+                        <p class="project-desc" style="text-align: center;">
+                            My professional developer portfolio detailing my <strong>CSE journey</strong>, technical skills, and <strong>past internship experiences</strong> in a sleek, interactive UI.
+                        </p>
+
+                        <div class="project-links" style="width: 100%; margin-top: auto;">
+                            <div class="btn-wrapper">
+                                <a href="https://aayushprjapati.github.io/my-portfolio" target="_blank" class="theme-btn">View Portfolio</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card-wrapper">
+                <div class="project-card" style="--theme-color: #2dd4bf;" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
+                    <div class="project-card-content">
+                        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 0.5rem;">
+                            <h3 class="project-title glow-title" style="margin-bottom: 0.8rem;">InsightCare 2.0</h3>
+                            <span class="status-badge" style="color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); background: rgba(56, 189, 248, 0.05);">● In Production</span>
+                        </div>
+                        <p class="bio" style="font-size: 0.75rem; margin-bottom: 1.5rem; text-align: center; color: rgba(45, 212, 191, 0.8);">Smart Healthcare Management</p>
+
+                        <p class="project-desc">
+                            The next iteration of the smart healthcare platform, featuring <strong>upgraded capabilities</strong>, refined UI/UX, and <strong>optimized performance</strong>.
+                        </p>
+
+                        <div class="tech-stack">
+                            <span class="tech-tag" style="background: rgba(45, 212, 191, 0.1); color: #2dd4bf; border-color: rgba(45, 212, 191, 0.3);">ReactJS</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">MongoDB</span>
+                        </div>
+
+                        <div class="project-links">
+                            <div class="btn-wrapper">
+                                <a href="https://aayushprjapati.github.io/InsightCare_2.0/" target="_blank" class="theme-btn">View Live Project</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card-wrapper">
+                <div class="project-card" style="--theme-color: #f8fafc;" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
+                    <div class="project-card-content">
+                        <h3 class="project-title glow-title">Scrape-it</h3>
+                        <p class="project-desc">A robust web scraping utility built to extract, process, and structure data efficiently from various online sources.</p>
+                        <div class="project-links" style="margin-top: auto;">
+                            <a href="https://aayushprjapati.github.io/scrape-it" target="_blank" class="standard-btn">View Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card-wrapper">
+                <div class="project-card" style="--theme-color: #f8fafc;" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
+                    <div class="project-card-content">
+                        <h3 class="project-title glow-title">InsightCare (v1)</h3>
+                        <p class="project-desc">A smart healthcare web platform designed to streamline medical processes and improve accessibility.</p>
+                        <div class="project-links" style="margin-top: auto;">
+                            <a href="https://aayushprjapati.github.io/InsightCare/" target="_blank" class="standard-btn">View Legacy Version</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Aayush Prajapati. Built for the love of code.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. Initialize Lenis Smooth Scroll
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                smoothTouch: false,
+            });
+
+            // Sync Lenis with GSAP ScrollTrigger
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+
+            // 2. GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Animate Header
+            gsap.from(".gsap-header > *", {
+                y: 40,
+                opacity: 0,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: "power4.out",
+                delay: 0.2
+            });
+
+            // Animate Project Cards on Scroll
+            const cards = gsap.utils.toArray('.project-card-wrapper');
+            
+            // Make cards visible right before animation starts
+            gsap.set(cards, { visibility: "visible" });
+
+            cards.forEach((card, i) => {
+                gsap.fromTo(card, 
+                    { 
+                        opacity: 0, 
+                        y: 100, 
+                        rotationY: -10, 
+                        scale: 0.95 
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        rotationY: 0,
+                        scale: 1,
+                        duration: 1.2,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: card,
+                            start: "top 85%", // Triggers when top of card hits 85% down the viewport
+                            toggleActions: "play none none reverse" // Animates in and reverses on scroll up
+                        }
+                    }
+                );
+            });
+        });
+    </script>
+</body>
+</html>
