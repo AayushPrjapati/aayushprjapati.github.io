@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aayush Prajapati | Selected Works</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #f4f4f4;
+            --accent: #1f1f1f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Lenis Recommended CSS */
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            margin-top: 1rem;
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        .projects {
+            padding: 10vh 5vw;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            /* Initial state setup for GSAP entrance */
+            opacity: 0;
+            transform: translateY(50px);
+            cursor: pointer;
+        }
+
+        .project-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: var(--accent);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Subtle placeholder gradient effect */
+        .project-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03));
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.02);
+            background-color: #2a2a2a;
+        }
+
+        .project-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-info p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #555;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    
+    <main class="app-container">
+        
+        <header class="hero">
+            <h1 class="hero-title">Aayush Prajapati</h1>
+            <p class="hero-subtitle">CS Engineer (2024-2028) & Web Developer</p>
+        </header>
+
+        <section class="projects">
+            <article class="project-card">
+                <div class="project-image"></div>
+                <div class="project-info">
+                    <h2>InsightCare</h2>
+                    <p>Smart Healthcare Web Platform</p>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-image"></div>
+                <div class="project-info">
+                    <h2>Spotify Integration</h2>
+                    <p>API & Web Application</p>
+                </div>
+            </article>
+            
+            <article class="project-card">
+                <div class="project-image"></div>
+                <div class="project-info">
+                    <h2>Portfolio Architecture</h2>
+                    <p>Front-End Engineering</p>
+                </div>
+            </article>
+            
+            <article class="project-card">
+                <div class="project-image"></div>
+                <div class="project-info">
+                    <h2>Data Visualizer</h2>
+                    <p>Interactive Dashboards</p>
+                </div>
+            </article>
+        </section>
+        
+        <footer class="footer">
+            <p>© 2026 Aayush Prajapati. Built with GSAP & Lenis.</p>
+        </footer>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            // 1. Initialize Lenis
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth ease-out
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+            });
+
+            // 2. Sync Lenis with GSAP ScrollTrigger
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+
+            // Disable lag smoothing for GSAP to prevent visual jumps
+            gsap.ticker.lagSmoothing(0);
+
+            // 3. Create Animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Entrance Animation
+            gsap.from(".hero-title", {
+                y: 100,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power4.out",
+                delay: 0.2
+            });
+
+            gsap.from(".hero-subtitle", {
+                y: 20,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                delay: 0.6
+            });
+
+            // Projects Scroll Reveal Animation
+            const projects = gsap.utils.toArray('.project-card');
+
+            projects.forEach((project) => {
+                gsap.to(project, {
+                    scrollTrigger: {
+                        trigger: project,
+                        start: "top 85%", // Triggers when top of element hits 85% down viewport
+                        end: "top 50%",
+                        toggleActions: "play none none reverse" // Animates in, reverses on scroll up
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+        });
+    </script>
+</body>
+</html>
